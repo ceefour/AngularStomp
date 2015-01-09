@@ -44,7 +44,7 @@ angular.module('AngularStomp', []).
             this.stompClient.disconnect(function() {
                 var args = arguments;
                 $rootScope.$apply(function() {
-                    callback.apply(args);
+                    callback.apply(stompClient, args);
                 })
             })
         }
