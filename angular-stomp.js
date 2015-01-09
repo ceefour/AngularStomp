@@ -8,7 +8,9 @@ angular.module('AngularStomp', []).
         var stompClient = {};
 
         function NGStomp(url) {
-            this.stompClient = Stomp.client(url);
+            //this.stompClient = Stomp.client(url);
+            // use SockJS
+            this.stompClient = Stomp.over( new SockJS(url) );
         }
 
         NGStomp.prototype.subscribe = function(queue, callback) {
@@ -28,12 +30,12 @@ angular.module('AngularStomp', []).
             this.stompClient.connect(user, password,
                 function(frame) {
                     $rootScope.$apply(function() {
-                        on_connect.apply(stompClient, frame);
+                        on_connect.call(stompClient, frame);
                     })
                 },
                 function(frame) {
                     $rootScope.$apply(function() {
-                        on_error.apply(stompClient, frame);
+                        on_error.call(stompClient, frame);
                     })
                 }, vhost);
         }
